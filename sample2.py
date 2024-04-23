@@ -12,6 +12,8 @@ app = Flask(__name__)
 
 # folder_path = "db"
 
+
+
 cached_llm = Ollama(model="llama3")
 
 # embedding = FastEmbedEmbeddings()
