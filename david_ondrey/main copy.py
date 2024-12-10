@@ -1,10 +1,17 @@
-from langchain_community.llms import Ollama
+
 from crewai import Agent, Task, Crew, Process
 import os
 
-os.environ["OPENAI_API_BASE"] = 'https://api.groq.com/openai/v1/'
-os.environ["OPENAI_MODEL_NAME"] = 'llama3-70b-8192'
-os.environ["OPENAI_API_KEY"] = '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'
+from langchain_openai import ChatOpenAI
+import os
+
+os.environ["OPENAI_API_KEY"] = "NA"
+
+llm = ChatOpenAI(
+    model = "llama3",
+    base_url = "http://localhost:11434/v1")
+
+
 
 
 
@@ -14,6 +21,7 @@ is_verbose = True
 classifier = Agent(
     role = "email_classifier",
     maxiter = 2,
+    llm=llm,
     goal = f"accuratelly classify '{email}' based on their body into classes: important, common, spam. return only one word - class name",
     backstory = "You are an AI assistant that will classify emails into classes: important, common, spam. You will receive only email body. Your mission is to help user manage their email inbox and prioritize their emails.",
     )
@@ -21,6 +29,7 @@ classifier = Agent(
 responder = Agent(
     role = "responder",
     maxiter = 2,
+    llm=llm,
     goal = "respond to user's emails based on its importance, respond to important emails first theb to common emails and ignore spam emails. Write simple text response",
     backstory = "You are an AI assistant that will respond to user's emails. Your mission is only respond to email accuratelly and honestly.",    
     )
